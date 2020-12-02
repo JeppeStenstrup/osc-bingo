@@ -218,15 +218,13 @@ var niceBoard = {
     rows: 0
 }
 
-var PREV_NUMBERS = [,,,,,]
+var PREV_NUMBERS = [0,0,0,0,0,0,0]
 
 function getUrl() {
     var s = ""
 
-    for(var i = 0; i < PREV_NUMBERS.length; i++) {
+    for(var i = 0; i < 6; i++) {
         s = s + PREV_NUMBERS[i] + "/"
-
-        if(i >= 5) break
     }
 
     return "http://localhost:3000/"+s
