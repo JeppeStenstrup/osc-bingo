@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="da">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style type="text/css">
+        table.board {
+          border: 2px solid black;
+          margin-bottom: 1rem;
+          font-size: 24pt;
+        }
+
+        table.board td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          width: 2em;
+          height: 2em;
+          text-align: center;
+          vertical-align: middle;
+        }
+        .drawn {
+          color: red;
+          background-color: lightgrey;
+        }
+    </style>
+
+    <title>Bankospil - Spil og check</title>
+</head>
+<body>
+<div class="container">
+    <h1>Spil og check</h1>
+    <div class="row">
+        <div class="col-md">
+            Spil og check - Julebanko 2020
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div>
+        <h1 class="display-4">Check</h1>
+    </div>
+    <div>
+        <form class="form-inline">
+            <div class="form-group">
+                <input type="text" id="boardNumber" class="form-control" placeholder="Bankoplade nummer">&nbsp;
+                <label for="boardNumber">Bankoplade nr (1 - 2400)</label>
+            </div>
+        </form>
+    </div>
+    <div>&nbsp;</div>
+    <div id="board"></div>
+</div>
+
+<div class="container">
+    <div>
+        <h1 class="display-4">Bankotal</h1>
+    </div>
+    <div class="row">
+        <div class="input-group col-sm">
+            <input type="text" class="form-control" placeholder="Næste bankotal" aria-label="Næste bankotal" aria-describedby="basic-addon2" id="nextNumber">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="buttonEnter">Tast</button>
+                <button class="btn btn-outline-secondary" type="button" id="buttonRandom">Tilfældig</button>
+            </div>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <div id="numbers">
+        <table class="board">
+            <tr>
+                <td id='x_1' class='xenter'>1</td>
+                <td id='x_2' class='xenter'>2</td>
+                <td id='x_3' class='xenter'>3</td>
+                <td id='x_4' class='xenter'>4</td>
+                <td id='x_5' class='xenter'>5</td>
+                <td id='x_6' class='xenter'>6</td>
+                <td id='x_7' class='xenter'>7</td>
+                <td id='x_8' class='xenter'>8</td>
+                <td id='x_9' class='xenter'>9</td>
+                <td id='x_10' class='xenter'>10</td>
+            </tr>
+            <tr>
+                <td id='x_11' class='xenter'>11</td>
+                <td id='x_12' class='xenter'>12</td>
+                <td id='x_13' class='xenter'>13</td>
+                <td id='x_14' class='xenter'>14</td>
+                <td id='x_15' class='xenter'>15</td>
+                <td id='x_16' class='xenter'>16</td>
+                <td id='x_17' class='xenter'>17</td>
+                <td id='x_18' class='xenter'>18</td>
+                <td id='x_19' class='xenter'>19</td>
+                <td id='x_20' class='xenter'>20</td>
+            </tr>
+            <tr>
+                <td id='x_21' class='xenter'>21</td>
+                <td id='x_22' class='xenter'>22</td>
+                <td id='x_23' class='xenter'>23</td>
+                <td id='x_24' class='xenter'>24</td>
+                <td id='x_25' class='xenter'>25</td>
+                <td id='x_26' class='xenter'>26</td>
+                <td id='x_27' class='xenter'>27</td>
+                <td id='x_28' class='xenter'>28</td>
+                <td id='x_29' class='xenter'>29</td>
+                <td id='x_30' class='xenter'>30</td>
+            </tr>
+            <tr>
+                <td id='x_31' class='xenter'>31</td>
+                <td id='x_32' class='xenter'>32</td>
+                <td id='x_33' class='xenter'>33</td>
+                <td id='x_34' class='xenter'>34</td>
+                <td id='x_35' class='xenter'>35</td>
+                <td id='x_36' class='xenter'>36</td>
+                <td id='x_37' class='xenter'>37</td>
+                <td id='x_38' class='xenter'>38</td>
+                <td id='x_39' class='xenter'>39</td>
+                <td id='x_40' class='xenter'>40</td>
+            </tr>
+            <tr>
+                <td id='x_41' class='xenter'>41</td>
+                <td id='x_42' class='xenter'>42</td>
+                <td id='x_43' class='xenter'>43</td>
+                <td id='x_44' class='xenter'>44</td>
+                <td id='x_45' class='xenter'>45</td>
+                <td id='x_46' class='xenter'>46</td>
+                <td id='x_47' class='xenter'>47</td>
+                <td id='x_48' class='xenter'>48</td>
+                <td id='x_49' class='xenter'>49</td>
+                <td id='x_50' class='xenter'>50</td>
+            </tr>
+            <tr>
+                <td id='x_51' class='xenter'>51</td>
+                <td id='x_52' class='xenter'>52</td>
+                <td id='x_53' class='xenter'>53</td>
+                <td id='x_54' class='xenter'>54</td>
+                <td id='x_55' class='xenter'>55</td>
+                <td id='x_56' class='xenter'>56</td>
+                <td id='x_57' class='xenter'>57</td>
+                <td id='x_58' class='xenter'>58</td>
+                <td id='x_59' class='xenter'>59</td>
+                <td id='x_60' class='xenter'>60</td>
+            </tr>
+            <tr>
+                <td id='x_61' class='xenter'>61</td>
+                <td id='x_62' class='xenter'>62</td>
+                <td id='x_63' class='xenter'>63</td>
+                <td id='x_64' class='xenter'>64</td>
+                <td id='x_65' class='xenter'>65</td>
+                <td id='x_66' class='xenter'>66</td>
+                <td id='x_67' class='xenter'>67</td>
+                <td id='x_68' class='xenter'>68</td>
+                <td id='x_69' class='xenter'>69</td>
+                <td id='x_70' class='xenter'>70</td>
+            </tr>
+            <tr>
+                <td id='x_71' class='xenter'>71</td>
+                <td id='x_72' class='xenter'>72</td>
+                <td id='x_73' class='xenter'>73</td>
+                <td id='x_74' class='xenter'>74</td>
+                <td id='x_75' class='xenter'>75</td>
+                <td id='x_76' class='xenter'>76</td>
+                <td id='x_77' class='xenter'>77</td>
+                <td id='x_78' class='xenter'>78</td>
+                <td id='x_79' class='xenter'>79</td>
+                <td id='x_80' class='xenter'>80</td>
+            </tr>
+            <tr>
+                <td id='x_81' class='xenter'>81</td>
+                <td id='x_82' class='xenter'>82</td>
+                <td id='x_83' class='xenter'>83</td>
+                <td id='x_84' class='xenter'>84</td>
+                <td id='x_85' class='xenter'>85</td>
+                <td id='x_86' class='xenter'>86</td>
+                <td id='x_87' class='xenter'>87</td>
+                <td id='x_88' class='xenter'>88</td>
+                <td id='x_89' class='xenter'>89</td>
+                <td id='x_90' class='xenter'>90</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="/assets/js/mustache/3.0.1/mustache.min.js"></script>
+<script src="all.js"></script>
+
+<script id="boardTemplate" type="text/template">
+    <table class="board">
+        <tbody>
+        {{#rows}}
+        <tr>
+            {{#.}}
+            <td class="bn_{{.}}">{{.}}</td>
+            {{/.}}
+        </tr>
+        {{/rows}}
+        </tbody>
+    </table>
+</script>
+
+<script type="text/javascript">
+var uid = (location.hash) ? location.hash.substring(1) : '';
+var currentBoardNumber = 0;
+var currentBoard = null;
+var numbers = new Array(90);
+var ncount = 0;
+var niceBoard = {
+    number: 0,
+    rows: 0
+}
+
+var PREV_NUMBERS = [,,,,,]
+
+function getUrl() {
+    var s = ""
+
+    for(var i = 0; i < PREV_NUMBERS.length; i++) {
+        s = s + PREV_NUMBERS[i] + "/"
+
+        if(i >= 5) break
+    }
+
+    return "http://localhost:3000/"+s
+}
+
+function renderTemplate(containerId, templateId, data) {
+    var template = $(templateId).html();
+    Mustache.parse(template);
+    var targetContainer = $(containerId);
+    targetContainer.html(Mustache.render(template, data));
+}
+
+function expandColumns(c5) {
+    var columns = ['', '', '', '', '', '', '', '', ''];
+    for (var i = 0; i < c5.length; i++) {
+        var n = c5[i];
+        var cid = n == 90 ? 8 : Math.floor(n / 10);
+        columns[cid] = '' + n;
+    }
+    return columns;
+}
+
+function renderBoard(board) {
+    var flat = board.numbers;
+    var rows = [ [], [], [] ];
+    for (var r = 0; r < 3; r++) {
+        var c5 = flat.slice(r * 5, r * 5 + 5);
+        rows[r] = expandColumns(c5);
+    }
+    var template = {
+        id: board.id,
+        rows: rows
+    }
+    currentBoardNumber = board.id;
+    currentBoard = template;
+    renderTemplate('#board', '#boardTemplate', template);
+}
+
+function renderExtBoard(number) {
+    var data = {
+        numbers: b[number - 1]
+    };
+    renderBoard(data);
+    checkBoard();
+}
+
+function checkEntry(e) {
+    setTimeout(function() {
+        var number = parseInt($('#boardNumber').val());
+        if (number !== NaN && number != currentBoardNumber) {
+            renderExtBoard(number);
+        }
+    }, 100);
+}
+
+function checkBoard() {
+    $('.drawn', $('#board')).removeClass('drawn');
+    if (!(currentBoard)) return;
+    var rows = currentBoard.rows;
+    var complete = [false, false, false];
+    var niceRows = 0;
+
+    for (var row = 0; row < 3; row++) {
+        var thisrow = 0;
+        for (var col = 0; col < 9; col++) {
+            var number = rows[row][col];
+            if ((number) && numbers[number-1] === true) {
+                $('.bn_' + number).addClass('drawn');
+                thisrow++;
+            }
+        }
+        if (thisrow === 5) {
+            complete[row] = true;
+            niceRows++;
+        }
+    }
+    if (niceRows === 0) return;
+    if (!(niceBoard) || niceBoard.number !== currentBoardNumber || niceBoard.rows !== niceRows) {
+        alert('Bankoplade ' + currentBoardNumber + ' har ' + (niceRows === 3 ? 'fuld plade' : niceRows + ' rækker'));
+        niceBoard = {
+            number: currentBoardNumber,
+            rows: niceRows
+        }
+    }
+}
+
+function nextNumber(x) {
+    if (numbers[x-1] === true) return;
+    $('#nextNumber').val(x);
+    ncount++;
+    numbers[x-1] = true;
+    var xid = '#x_' + x;
+    $(xid).addClass('drawn');
+    if (ncount === 90) {
+        $('#buttonEnter,#buttonRandom').attr('disabled', true);
+    }
+    PREV_NUMBERS.unshift(x)
+    console.log(PREV_NUMBERS)
+    console.log(getUrl())
+    fetch(getUrl())
+    checkBoard();
+}
+
+function nextRandom(e) {
+    if (ncount < 90) {
+        var x;
+        do {
+            x = Math.floor(Math.random()*90)+1;
+        } while (numbers[x-1] === true);
+        nextNumber(x);
+    }
+}
+
+$(document).ready(function() {
+    $('#boardNumber').on('keyup', checkEntry);
+    $('#buttonRandom').click(nextRandom);
+    $('#buttonEnter').click(function() {
+        var x = parseInt($('#nextNumber').val());
+        if (x > 0 && x <= 90) {
+            nextNumber(x);
+        }
+    });
+    $('.xenter').attr('title', 'Dobbelt-klik for at vælge');
+    $('.xenter').dblclick(function() {
+        document.getSelection().removeAllRanges();
+        var id = $(this).attr('id');
+        var x = parseInt(id.substr(2));
+        if (numbers[x-1] === true) {
+            numbers[x-1] = false;
+            ncount--;
+            $('#nextNumber').val('' );
+            $(this).removeClass('drawn');
+            checkBoard();
+        } else {
+            nextNumber(x);
+        }
+    });
+    renderExtBoard(1);
+});
+
+</script>
+
+</body>
+</html>
