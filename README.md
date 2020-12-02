@@ -4,7 +4,7 @@
 
 ``` cd osc-bingo && npm install ```
 
-When finished, ``` node app.js ```
+When finished, ``` node app.js ``` and access the bingo-plate on ```localhost:3000```
 
 -----
 
