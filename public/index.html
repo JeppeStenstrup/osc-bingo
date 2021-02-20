@@ -39,6 +39,12 @@
             Spil og check - Julebanko 2020
         </div>
     </div>
+    <div>
+        <select id="games">
+
+        </select>
+        <button onclick="load()">Load</button>
+    </div>
 </div>
 
 <div class="container">
@@ -231,10 +237,32 @@ function getUrl() {
     return "http://localhost:3000/"+s
 }
 
+function saveData() {
+    fetch("http://localhost:3000/save/"+PREV_NUMBERS)
+}
+
+ function load() {
+
+    data = $("#games").val()
+    fetch("http://localhost:3000/load/"+data)
+    .then(res => res.json())
+    .then((json) => {
+        PREV_NUMBERS = json
+
+        for(let i = 0; i < json.length; i++) {
+            ncount++;
+            numbers[i] = true;
+            var xid = '#x_' + parseInt(json[i])
+            $(xid).addClass('drawn');
+        }
+    });
+}
+
 $("#buttonDelete").click(function() {
     PREV_NUMBERS.shift()
     console.log(PREV_NUMBERS)
     fetch(getUrl())
+    saveData()
     checkBoard();
 })
 
@@ -329,11 +357,12 @@ function nextNumber(x) {
     if (ncount === 90) {
         $('#buttonEnter,#buttonRandom').attr('disabled', true);
     }
-    PREV_NUMBERS.unshift(x)
+    if(!PREV_NUMBERS.includes(String(x))) PREV_NUMBERS.unshift(String(x))
     console.log(PREV_NUMBERS)
     console.log(getUrl())
     fetch(getUrl())
-    checkBoard();
+    saveData()
+    checkBoard()
 }
 
 function nextRandom(e) {
@@ -347,6 +376,15 @@ function nextRandom(e) {
 }
 
 $(document).ready(function() {
+
+    fetch("http://localhost:3000/getGames")
+    .then(res => res.json())
+    .then((data) => {
+        data.forEach((t) => {
+            $("#games").append("<option>"+t+"</option>")
+        })
+    })
+
     $('#boardNumber').on('keyup', checkEntry);
     $('#buttonRandom').click(nextRandom);
     $('#buttonEnter').click(function() {
@@ -360,13 +398,15 @@ $(document).ready(function() {
         document.getSelection().removeAllRanges();
         var id = $(this).attr('id');
         var x = parseInt(id.substr(2));
-        if (numbers[x-1] === true) {
+        console.log(String(x))
+        if (numbers[x-1] === true && PREV_NUMBERS.includes(String(x))) {
             numbers[x-1] = false;
             ncount--;
             $('#nextNumber').val('' );
-            PREV_NUMBERS.splice(PREV_NUMBERS.indexOf(x), 1)
+            PREV_NUMBERS.splice(PREV_NUMBERS.indexOf(String(x)), 1)
             console.log(PREV_NUMBERS)
             fetch(getUrl())
+            saveData()
             checkBoard();
             $(this).removeClass('drawn');
             checkBoard();
