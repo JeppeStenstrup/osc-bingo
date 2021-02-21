@@ -40,10 +40,12 @@
         </div>
     </div>
     <div>
+        <input type="text" autocomplete="false" id="game_name" /><button id="submit_new_game">New game</button>
+        <br>
         <select id="games">
 
         </select>
-        <button onclick="load()">Load</button>
+        <button onclick="load()">Load</button> > <span id="active_game">None loaded</span>
     </div>
 </div>
 
@@ -215,6 +217,9 @@
 </script>
 
 <script type="text/javascript">
+
+let activeGame = ""
+
 var uid = (location.hash) ? location.hash.substring(1) : '';
 var currentBoardNumber = 0;
 var currentBoard = null;
@@ -238,12 +243,16 @@ function getUrl() {
 }
 
 function saveData() {
-    fetch("http://localhost:3000/save/"+PREV_NUMBERS)
+    fetch("http://localhost:3000/save/"+active_game+"/"+PREV_NUMBERS)
 }
 
  function load() {
 
     data = $("#games").val()
+    
+    $('#active_game').text(data)
+    active_game = $('#active_game').text()
+
     fetch("http://localhost:3000/load/"+data)
     .then(res => res.json())
     .then((json) => {
@@ -258,9 +267,18 @@ function saveData() {
     });
 }
 
+$('#submit_new_game').click(function() {
+    let game_name = $('#game_name').val()
+    fetch("http://localhost:3000/newGame/"+game_name)
+    .catch((err) => {
+        console.log(err)
+    })
+    reloadList()
+})
+
 $("#buttonDelete").click(function() {
     PREV_NUMBERS.shift()
-    console.log(PREV_NUMBERS)
+    //console.log(PREV_NUMBERS)
     fetch(getUrl())
     saveData()
     checkBoard();
@@ -358,8 +376,8 @@ function nextNumber(x) {
         $('#buttonEnter,#buttonRandom').attr('disabled', true);
     }
     if(!PREV_NUMBERS.includes(String(x))) PREV_NUMBERS.unshift(String(x))
-    console.log(PREV_NUMBERS)
-    console.log(getUrl())
+    //console.log(PREV_NUMBERS)
+    //console.log(getUrl())
     fetch(getUrl())
     saveData()
     checkBoard()
@@ -375,8 +393,7 @@ function nextRandom(e) {
     }
 }
 
-$(document).ready(function() {
-
+function reloadList() {
     fetch("http://localhost:3000/getGames")
     .then(res => res.json())
     .then((data) => {
@@ -384,6 +401,11 @@ $(document).ready(function() {
             $("#games").append("<option>"+t+"</option>")
         })
     })
+}
+
+$(document).ready(function() {
+
+    reloadList()
 
     $('#boardNumber').on('keyup', checkEntry);
     $('#buttonRandom').click(nextRandom);

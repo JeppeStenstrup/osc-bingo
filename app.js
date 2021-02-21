@@ -36,13 +36,13 @@ app.get('/:tal1/:tal2/:tal3/:tal4/:tal5/:tal6', (req, res) => {
     res.end()
 })
 
-app.get('/save/:data', (req, res) => {
+app.get('/save/:path/:data', (req, res) => {
     console.log(req.params.data)
     let datetime = new Date();
     let obj = req.params.data.split(',')
     //console.log(obj)
 
-    fs.writeFile(`saved_games/${datetime.getDate()}-${datetime.getMonth()+1}-${datetime.getFullYear()}.txt`, JSON.stringify(obj), function (err) {
+    fs.writeFile(`saved_games/${req.params.path}`, JSON.stringify(obj), function (err) {
         if (err) return console.log(err);
     });
     res.end()
@@ -67,8 +67,19 @@ app.get('/getGames', (req, res) => {
             return
         }
 
-        console.log(files)
         res.send(JSON.stringify(files))
+    })
+})
+
+app.get('/newGame/:data', (req, res) => {
+    console.log(req.params.data)
+    fs.writeFile('saved_games/'+req.params.data+'.txt', '["0","0","0","0","0","0"]', (err, data) => {
+        if (err) {
+            console.log(err)
+            return
+        }
+
+        res.sendStatus(200)
     })
 })
 
