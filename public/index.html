@@ -39,6 +39,14 @@
             Spil og check - Julebanko 2020
         </div>
     </div>
+    <div>
+        <input type="text" autocomplete="false" id="game_name" /><button id="submit_new_game">New game</button>
+        <br>
+        <select id="games">
+
+        </select>
+        <button onclick="load()">Load</button> > <span id="active_game">None loaded</span>
+    </div>
 </div>
 
 <div class="container">
@@ -209,6 +217,9 @@
 </script>
 
 <script type="text/javascript">
+
+let activeGame = ""
+
 var uid = (location.hash) ? location.hash.substring(1) : '';
 var currentBoardNumber = 0;
 var currentBoard = null;
@@ -231,10 +242,45 @@ function getUrl() {
     return "http://localhost:3000/"+s
 }
 
+function saveData() {
+    fetch("http://localhost:3000/save/"+active_game+"/"+PREV_NUMBERS)
+}
+
+ function load() {
+
+    data = $("#games").val()
+    
+    $('#active_game').text(data)
+    active_game = $('#active_game').text()
+
+    fetch("http://localhost:3000/load/"+data)
+    .then(res => res.json())
+    .then((json) => {
+        PREV_NUMBERS = json
+
+        for(let i = 0; i < json.length; i++) {
+            ncount++;
+            numbers[i] = true;
+            var xid = '#x_' + parseInt(json[i])
+            $(xid).addClass('drawn');
+        }
+    });
+}
+
+$('#submit_new_game').click(function() {
+    let game_name = $('#game_name').val()
+    fetch("http://localhost:3000/newGame/"+game_name)
+    .catch((err) => {
+        console.log(err)
+    })
+    reloadList()
+})
+
 $("#buttonDelete").click(function() {
     PREV_NUMBERS.shift()
-    console.log(PREV_NUMBERS)
+    //console.log(PREV_NUMBERS)
     fetch(getUrl())
+    saveData()
     checkBoard();
 })
 
@@ -329,11 +375,12 @@ function nextNumber(x) {
     if (ncount === 90) {
         $('#buttonEnter,#buttonRandom').attr('disabled', true);
     }
-    PREV_NUMBERS.unshift(x)
-    console.log(PREV_NUMBERS)
-    console.log(getUrl())
+    if(!PREV_NUMBERS.includes(String(x))) PREV_NUMBERS.unshift(String(x))
+    //console.log(PREV_NUMBERS)
+    //console.log(getUrl())
     fetch(getUrl())
-    checkBoard();
+    saveData()
+    checkBoard()
 }
 
 function nextRandom(e) {
@@ -346,7 +393,20 @@ function nextRandom(e) {
     }
 }
 
+function reloadList() {
+    fetch("http://localhost:3000/getGames")
+    .then(res => res.json())
+    .then((data) => {
+        data.forEach((t) => {
+            $("#games").append("<option>"+t+"</option>")
+        })
+    })
+}
+
 $(document).ready(function() {
+
+    reloadList()
+
     $('#boardNumber').on('keyup', checkEntry);
     $('#buttonRandom').click(nextRandom);
     $('#buttonEnter').click(function() {
@@ -360,13 +420,15 @@ $(document).ready(function() {
         document.getSelection().removeAllRanges();
         var id = $(this).attr('id');
         var x = parseInt(id.substr(2));
-        if (numbers[x-1] === true) {
+        console.log(String(x))
+        if (numbers[x-1] === true && PREV_NUMBERS.includes(String(x))) {
             numbers[x-1] = false;
             ncount--;
             $('#nextNumber').val('' );
-            PREV_NUMBERS.splice(PREV_NUMBERS.indexOf(x), 1)
+            PREV_NUMBERS.splice(PREV_NUMBERS.indexOf(String(x)), 1)
             console.log(PREV_NUMBERS)
             fetch(getUrl())
+            saveData()
             checkBoard();
             $(this).removeClass('drawn');
             checkBoard();
