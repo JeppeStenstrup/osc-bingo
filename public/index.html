@@ -366,8 +366,9 @@ function checkBoard() {
 }
 
 function nextNumber(x) {
-    if (numbers[x-1] === true) return;
+    //if (numbers[x-1] === true) return;
     $('#nextNumber').val(x);
+    console.log($('#nextNumber').val(x))
     ncount++;
     numbers[x-1] = true;
     var xid = '#x_' + x;
@@ -414,6 +415,7 @@ $(document).ready(function() {
         if (x > 0 && x <= 90) {
             nextNumber(x);
         }
+        nextNumber(x);
     });
     $('.xenter').attr('title', 'Dobbelt-klik for at vælge');
     $('.xenter').dblclick(function() {
