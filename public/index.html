@@ -199,7 +199,8 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script src="/assets/js/mustache/3.0.1/mustache.min.js"></script>
+<script src="mustache.js"></script>
+<!--<script src="https://github.com/janl/mustache.js/blob/master/mustache.js"></script>-->
 <script src="all.js"></script>
 
 <script id="boardTemplate" type="text/template">
@@ -256,12 +257,13 @@ function saveData() {
     fetch("http://localhost:3000/load/"+data)
     .then(res => res.json())
     .then((json) => {
-        PREV_NUMBERS = json
+        PREV_NUMBERS = json || [0,0,0,0,0,0,0]
 
-        for(let i = 0; i < json.length; i++) {
+        for(let i = 0; i < 90; i++) $("#x_"+i).removeClass('drawn');
+        for(let i = 0; i < PREV_NUMBERS.length; i++) {
             ncount++;
             numbers[i] = true;
-            var xid = '#x_' + parseInt(json[i])
+            var xid = '#x_' + parseInt(PREV_NUMBERS[i])
             $(xid).addClass('drawn');
         }
     });
@@ -283,6 +285,14 @@ $("#buttonDelete").click(function() {
     saveData()
     checkBoard();
 })
+
+$("#boardNumber").on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) { 
+    e.preventDefault();
+    return false;
+  }
+});
 
 function renderTemplate(containerId, templateId, data) {
     var template = $(templateId).html();

@@ -56,6 +56,7 @@ app.get('/load/:data', (req, res) => {
         }
 
         res.setHeader('Content-Type', 'application/json');
+        console.log(data)
         res.send(data)
     })
 })
